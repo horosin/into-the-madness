@@ -35,8 +35,6 @@ var action = {},
     mixer;
 var activeActionName = 'idle';
 
-var objects = [];
-
 // var debug = true;
 var debug = false;
 
