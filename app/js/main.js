@@ -1,5 +1,5 @@
 var clock, container, camera, scene, renderer, controls, listener;
-var audio = false;
+var audio = true;
 
 var film;
 
@@ -59,13 +59,13 @@ window.addEventListener('load', init, false);
 function init() {
     createScene();
 
-    film = new Film(scene);
-
     createLights();
 
     createGround();
 
     createCharacter();
+
+    film = new Film(scene, character);
 
 }
 
@@ -92,6 +92,9 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+var walked = false,
+    runned = false;
+
 function animate() {
 
     window.stats.begin();
@@ -103,6 +106,16 @@ function animate() {
     controls.update();
 
     film.animate(delta, elapsed);
+
+
+    if (!walked && elapsed > 5) {
+        fadeAction('walk');
+        walked = true;
+    } else if (!runned && elapsed > 10) {
+        fadeAction('run');
+        runned = true;
+    }
+
 
     render(delta);
 
@@ -178,8 +191,8 @@ function createLights() {
     light.position.set(0, 10, 7);
     light.castShadow = true;
 
-    light.shadow.mapSize.width = 500;
-    light.shadow.mapSize.height = 500;
+    light.shadow.mapSize.width = 1024;
+    light.shadow.mapSize.height = 1024;
 
     light.shadow.camera.near = 5;
     light.shadow.camera.far = 14;
@@ -259,7 +272,5 @@ function createCharacter() {
 
         isLoaded = true;
         action.idle.play();
-        fadeAction('walk');
-        fadeAction('run');
     });
 }
