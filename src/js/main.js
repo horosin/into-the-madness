@@ -243,7 +243,7 @@ function createCharacter() {
 
         character = new THREE.SkinnedMesh(
             geometry,
-            new THREE.MeshFaceMaterial(materials)
+            materials
         );
         character.scale.set(0.5, 0.5, 0.5);
         mixer = new THREE.AnimationMixer(character);
