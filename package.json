@@ -1,0 +1,36 @@
+{
+  "name": "into-the-madness",
+  "version": "1.0.0",
+  "description": "Animation of running character using three.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack-dev-server --output-public-path=/build/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/horosin/into-the-madness.git"
+  },
+  "keywords": [
+    "game",
+    "animation",
+    "three"
+  ],
+  "author": "Karol Horosin",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/horosin/into-the-madness#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^4.13.0",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.4"
+  },
+  "dependencies": {
+    "stats.js": "^0.17.0",
+    "three": "^0.94.0",
+    "three-orbitcontrols": "^2.1.2"
+  }
+}

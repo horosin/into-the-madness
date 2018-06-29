@@ -1,5 +1,12 @@
+import * as THREE from "three";
+import Stats from "stats.js";
+import OrbitControls from "three-orbitcontrols";
+
+import { Film } from "./Film.js"
+
 var clock, container, camera, scene, renderer, controls, listener;
 var audio = false;
+const stats = false;
 
 var film;
 
@@ -21,9 +28,11 @@ manager.onError = function(url) {
 
 
 // enable statistics
-window.stats = new Stats();
-window.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-document.body.appendChild(window.stats.dom);
+if(stats) {
+    window.stats = new Stats();
+    window.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+    document.body.appendChild(window.stats.dom);
+}
 
 
 var ground, character;
@@ -97,7 +106,9 @@ var walked = false,
 
 function animate() {
 
-    window.stats.begin();
+    if(stats) {
+        window.stats.begin();
+    }
 
     let delta = clock.getDelta();
     let elapsed = clock.getElapsedTime();
@@ -118,8 +129,9 @@ function animate() {
 
 
     render(delta);
-
-    window.stats.end();
+    if(stats) {
+        window.stats.end();
+    }
     requestAnimationFrame(animate);
 }
 
@@ -170,7 +182,7 @@ function createScene() {
         camera.add(listener);
     }
 
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls = new OrbitControls(camera, renderer.domElement);
     //controls.target = new THREE.Vector3(0, 0.6, 0);
 }
 

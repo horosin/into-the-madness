@@ -1,4 +1,6 @@
-class Film {
+import * as THREE from "three";
+
+export class Film {
 
     constructor(scene, character) {
 
