@@ -6,7 +6,7 @@ import { Film } from "./Film.js"
 
 var clock, container, camera, scene, renderer, controls, listener;
 var audio = false;
-const stats = false;
+const stats = true;
 
 var film;
 
