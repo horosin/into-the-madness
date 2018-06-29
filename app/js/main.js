@@ -1,5 +1,5 @@
 var clock, container, camera, scene, renderer, controls, listener;
-var audio = true;
+var audio = false;
 
 var film;
 
@@ -162,7 +162,7 @@ function createScene() {
         var audioLoader = new THREE.AudioLoader(manager);
 
         //Load a sound and set it as the Audio object's buffer
-        audioLoader.load('music/song.mp3', function(buffer) {
+        audioLoader.load('assets/music/song.mp3', function(buffer) {
             sound.setBuffer(buffer);
             sound.setLoop(true);
             sound.play();
@@ -224,7 +224,7 @@ function createGround() {
 }
 
 function createCharacter() {
-    loader.load('./models/eva-animated.json', function(geometry, materials) {
+    loader.load('assets/models/eva-animated.json', function(geometry, materials) {
         materials.forEach(function(material) {
             material.skinning = true;
         });
