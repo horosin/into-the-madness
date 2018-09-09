@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "start": "webpack-dev-server --output-public-path=/build/",
+    "start": "webpack-dev-server --content-base build/",
     "electron": "electron .",
     "electron-build": "npm run build && electron ."
   },
