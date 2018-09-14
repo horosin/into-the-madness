@@ -2,7 +2,12 @@ import * as THREE from "three";
 import Stats from "stats.js";
 import OrbitControls from "three-orbitcontrols";
 
-import { Film } from "./Film.js"
+import { Film } from "./film.js"
+
+import {
+    createMeshesReg as createCubes,
+    animateMeshes as animateCubes,
+    deleteMeshes as deleteCubes } from './animations/spinning_cubes'
 
 var clock, container, camera, scene, renderer, controls, listener;
 var audio = false;
@@ -44,8 +49,8 @@ var action = {},
     mixer;
 var activeActionName = 'idle';
 
-// var debug = true;
-var debug = false;
+var debug = true;
+// var debug = false;
 
 var arrAnimations = [
     'idle',
@@ -75,7 +80,12 @@ function init() {
     createCharacter();
 
     film = new Film(scene, character);
+    registerAnimations(film)
 
+}
+
+function registerAnimations(film) {
+    film.registerEvent(2, 100, createCubes, animateCubes, deleteCubes);
 }
 
 function fadeAction(name) {
