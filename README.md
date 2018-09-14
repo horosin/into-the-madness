@@ -1,24 +1,12 @@
-Run server in local directory
+# Into the madness
+
+Animation of a journey through magical and scary world of blocky imagination.
+
+## Run for development
 ```
-python -m SimpleHTTPServer 8000
+npm start
 ```
 
+## Acknowledgements
 
-# threejs-animation-workflow
-A basic example of how to import from Blender multiple animated 3D models with three.js
-
-## This is the source code of this article
-Here are all the workflow explained & the .blend files & source files of the different part of the process ( model | map | texture | rig | animate | export | import ).
-###[http://unboring.net/workflows/animation.html](http://unboring.net/workflows/animation.html)
-[![Workflow: Animation from Blender to three.js](http://unboring.net/workflows/img/animation/share.jpg)](http://unboring.net/workflows/animation.html)
-
-# Credits
-
-Arturo Paracuellos / [@arturitu](http://twitter.com/arturitu) ( [Unboring.net](http://www.unboring.net) )
-
-License
-=======
-
-MIT licensed
-
-Copyright © 2016 Unboring.net
+Thanks to Arturo Paracuellos / [@arturitu](http://twitter.com/arturitu) ( [Unboring.net](http://www.unboring.net) ) for an excelent [tutorial](http://unboring.net/workflows/animation.html) on character animation. The model for this project was created by him and slightly retextured by myself.
