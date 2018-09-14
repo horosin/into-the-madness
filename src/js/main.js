@@ -9,6 +9,11 @@ import {
     animateMeshes as animateCubes,
     deleteMeshes as deleteCubes } from './animations/spinning_cubes'
 
+import {
+    createFence,
+    animateMeshes as animateFence,
+    deleteMeshes as deleteFence } from './animations/fence'
+
 var clock, container, camera, scene, renderer, controls, listener;
 var audio = false;
 const stats = true;
@@ -49,8 +54,8 @@ var action = {},
     mixer;
 var activeActionName = 'idle';
 
-var debug = true;
-// var debug = false;
+// var debug = true;
+var debug = false;
 
 var arrAnimations = [
     'idle',
@@ -85,7 +90,11 @@ function init() {
 }
 
 function registerAnimations(film) {
-    film.registerEvent(2, 100, createCubes, animateCubes, deleteCubes);
+    film.registerEvent(5, 20, createCubes, animateCubes, deleteCubes);
+    film.registerEvent(10, 100, createFence, animateFence, deleteFence);
+    film.registerEvent(20, 100, createCubes, animateCubes, deleteCubes);
+    film.registerEvent(25, 100, createFence, animateFence, deleteFence);
+    film.registerEvent(30, 100, createCubes, animateCubes, deleteCubes);
 }
 
 function fadeAction(name) {
