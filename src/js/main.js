@@ -85,7 +85,7 @@ function init() {
     createCharacter();
 
     film = new Film(scene, character);
-    registerAnimations(film)
+    registerAnimations(film);
 
 }
 
