@@ -9,7 +9,7 @@ Animation of a journey through magical and scary world of blocky imagination.
 Coming soon.
 
 # Technology
-This project utilizes: node.js, three.js, webpack, es6. It was created in order for me to learn in-browser 3d game development.
+This project utilizes: node.js, three.js, webpack, es6, electron. It was created in order for me to learn in-browser 3d game development.
 
 It was created in a matter of few evenings and quickly grew to an unexpected size. Then I decided to make the code quality better, which was a project on it's own. Designing a proper application structure and abstractions was and still is challenging.
 
@@ -19,6 +19,11 @@ Right now it's in a better shape but still needs some work, mainly on `main.js` 
 ```
 npm i
 npm start
+```
+
+You can also run it in a nice, electron window:
+```
+npm run electron
 ```
 
 ## Acknowledgements
