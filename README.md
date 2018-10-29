@@ -5,10 +5,10 @@ Animation of a journey through magical and scary world of blocky imagination.
 ![Game screenshot](docs/screenshot.png "Into the madness screenshot")
 
 
-# Try it out
+## Try it out
 Coming soon.
 
-# Technology
+## Technology
 This project utilizes: node.js, three.js, webpack, es6, electron. It was created in order for me to learn in-browser 3d game development.
 
 It was created in a matter of few evenings and quickly grew to an unexpected size. Then I decided to make the code quality better, which was a project on it's own. Designing a proper application structure and abstractions was and still is challenging.
