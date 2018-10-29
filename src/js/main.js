@@ -14,6 +14,10 @@ import {
     animateMeshes as animateFence,
     deleteMeshes as deleteFence } from './animations/fence'
 
+import { createLights } from './lights'
+import { createGround } from './ground'
+import { createCharacter, fadeAction, animateCharacter } from './character'
+
 var clock, container, camera, scene, renderer, controls, listener;
 var audio = false;
 const stats = true;
@@ -44,45 +48,23 @@ if(stats) {
     document.body.appendChild(window.stats.dom);
 }
 
-
-var ground, character;
-var light, ambientLight;
-var textureLoader = new THREE.TextureLoader(manager);
 var loader = new THREE.JSONLoader(manager);
-var isLoaded = false;
-var action = {},
-    mixer;
-var activeActionName = 'idle';
+
+
 
 // var debug = true;
 var debug = false;
 
-var arrAnimations = [
-    'idle',
-    'walk',
-    'run',
-    'hello'
-];
-var actualAnimation = 0;
-
-var colors = {
-    background: 0x452C57,
-    orange: 0xFFB300,
-    grapefruit: 0xFF6136,
-    pink: 0xCC0052,
-    blue: 0x006E96
-}
-
 window.addEventListener('load', init, false);
 
 function init() {
-    createScene();
+    scene = createScene();
 
-    createLights();
+    createLights(scene);
 
-    createGround();
+    createGround(scene);
 
-    createCharacter();
+    let character = createCharacter(loader, scene);
 
     film = new Film(scene, character);
     registerAnimations(film);
@@ -97,21 +79,7 @@ function registerAnimations(film) {
     film.registerEvent(30, 100, createCubes, animateCubes, deleteCubes);
 }
 
-function fadeAction(name) {
-    var from = action[activeActionName].play();
-    var to = action[name].play();
 
-    from.enabled = true;
-    to.enabled = true;
-
-    if (to.loop === THREE.LoopOnce) {
-        to.reset();
-    }
-
-    from.crossFadeTo(to, 1.0);
-    activeActionName = name;
-
-}
 
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -119,6 +87,7 @@ function onWindowResize() {
 
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
+window.addEventListener('resize', onWindowResize, false);
 
 var walked = false,
     runned = false;
@@ -146,7 +115,7 @@ function animate() {
         runned = true;
     }
 
-
+    animateCharacter(delta);
     render(delta);
     if(stats) {
         window.stats.end();
@@ -155,19 +124,13 @@ function animate() {
 }
 
 function render(delta) {
-    if (isLoaded) {
-        mixer.update(delta);
-    }
     renderer.render(scene, camera);
 }
 
 function createScene() {
     clock = new THREE.Clock();
 
-    scene = new THREE.Scene();
-    //scene.background = new THREE.Color(colors.background);
-
-    //scene.fog = new THREE.Fog(colors.blue, 10, 950);
+    let scene = new THREE.Scene();
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -203,105 +166,6 @@ function createScene() {
 
     controls = new OrbitControls(camera, renderer.domElement);
     //controls.target = new THREE.Vector3(0, 0.6, 0);
-}
 
-function createLights() {
-
-    if (debug) {
-        ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-        scene.add(ambientLight);
-    }
-    light = new THREE.SpotLight(
-        0xffffff, // color
-        2, // intensity
-        27, // distance
-        Math.PI / 10, // minimum angle
-        0.2, // penumbra
-        0 // light dims
-    );
-    light.position.set(0, 10, 7);
-    light.castShadow = true;
-
-    light.shadow.mapSize.width = 1024;
-    light.shadow.mapSize.height = 1024;
-
-    light.shadow.camera.near = 5;
-    light.shadow.camera.far = 14;
-    // light.shadow.camera.fov = 10;
-
-    light.target.position.set(0, 0, 5);
-    scene.add(light, light.target);
-    light.target.updateMatrixWorld()
-
-    // debug = true;
-    if (debug) {
-        var helper = new THREE.SpotLightHelper(light);
-        scene.add(helper);
-
-        var helper2 = new THREE.CameraHelper(light.shadow.camera);
-        scene.add(helper2);
-    }
-}
-
-function createGround() {
-    var geometry = new THREE.PlaneBufferGeometry(100, 100);
-    geometry.rotateX(-Math.PI / 2);
-    var material = new THREE.MeshPhongMaterial({ color: colors.grapefruit });
-    ground = new THREE.Mesh(geometry, material);
-
-    ground.receiveShadow = true;
-    ground.translateZ(5);
-    scene.add(ground);
-}
-
-function createCharacter() {
-    loader.load('assets/models/eva-animated.json', function(geometry, materials) {
-        materials.forEach(function(material) {
-            material.skinning = true;
-        });
-
-        character = new THREE.SkinnedMesh(
-            geometry,
-            materials
-        );
-        character.scale.set(0.5, 0.5, 0.5);
-        mixer = new THREE.AnimationMixer(character);
-
-        action.hello = mixer.clipAction(geometry.animations[0]);
-        action.idle = mixer.clipAction(geometry.animations[1]);
-        action.run = mixer.clipAction(geometry.animations[3]);
-        action.walk = mixer.clipAction(geometry.animations[4]);
-
-        action.hello.setEffectiveWeight(1);
-        action.idle.setEffectiveWeight(1);
-        action.run.setEffectiveWeight(1);
-        action.walk.setEffectiveWeight(1);
-
-        action.hello.setLoop(THREE.LoopOnce, 0);
-        action.hello.clampWhenFinished = true;
-
-        action.hello.enabled = true;
-        action.idle.enabled = true;
-        action.run.enabled = true;
-        action.walk.enabled = true;
-
-        character.castShadow = true;
-
-        scene.add(character);
-        character.rotateY(Math.PI);
-        character.translateZ(-5);
-        character.geometry.computeVertexNormals();
-        // character.updateMatrixWorld();
-        // character.computeFaceNormals();
-        // shine dir light at our character
-        // light.target = character;
-        // scene.add(light.target);
-
-        window.addEventListener('resize', onWindowResize, false);
-
-
-
-        isLoaded = true;
-        action.idle.play();
-    });
+    return scene;
 }
