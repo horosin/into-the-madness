@@ -2,7 +2,7 @@ import * as THREE from "three";
 import Stats from "stats.js";
 import OrbitControls from "three-orbitcontrols";
 
-import { Film } from "./film.js"
+import { Film } from "./scene/film.js"
 
 import {
     createMeshesReg as createCubes,
@@ -14,31 +14,16 @@ import {
     animateMeshes as animateFence,
     deleteMeshes as deleteFence } from './animations/fence'
 
-import { createLights } from './lights'
-import { createGround } from './ground'
-import { createCharacter, fadeAction, animateCharacter } from './character'
+import { createLights } from './scene/lights'
+import { createGround } from './scene/ground'
+import { createCharacter, animateCharacter } from './character'
+import { stats } from './config'
+import { Manager, configureMusic } from './scene/utils'
 
-var clock, container, camera, scene, renderer, controls, listener;
-var audio = false;
-const stats = true;
+const manager = Manager(animate);
+var clock, container, camera, scene, renderer, controls;
 
 var film;
-
-// loading stuff
-var manager = new THREE.LoadingManager();
-manager.onStart = function(url, itemsLoaded, itemsTotal) {
-    console.log('Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
-};
-manager.onLoad = function() {
-    console.log('Loading complete!');
-    animate();
-};
-manager.onProgress = function(url, itemsLoaded, itemsTotal) {
-    console.log('Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
-};
-manager.onError = function(url) {
-    console.log('There was an error loading ' + url);
-};
 
 
 // enable statistics
@@ -48,15 +33,6 @@ if(stats) {
     document.body.appendChild(window.stats.dom);
 }
 
-var loader = new THREE.JSONLoader(manager);
-
-
-
-// var debug = true;
-var debug = false;
-
-window.addEventListener('load', init, false);
-
 function init() {
     scene = createScene();
 
@@ -64,12 +40,13 @@ function init() {
 
     createGround(scene);
 
-    let character = createCharacter(loader, scene);
+    let character = createCharacter(manager, scene);
 
     film = new Film(scene, character);
     registerAnimations(film);
 
 }
+window.addEventListener('load', init, false);
 
 function registerAnimations(film) {
     film.registerEvent(5, 20, createCubes, animateCubes, deleteCubes);
@@ -79,8 +56,6 @@ function registerAnimations(film) {
     film.registerEvent(30, 100, createCubes, animateCubes, deleteCubes);
 }
 
-
-
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -88,9 +63,6 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 window.addEventListener('resize', onWindowResize, false);
-
-var walked = false,
-    runned = false;
 
 function animate() {
 
@@ -100,30 +72,20 @@ function animate() {
 
     let delta = clock.getDelta();
     let elapsed = clock.getElapsedTime();
-    //console.log(clock.getElapsedTime());
 
     controls.update();
 
     film.animate(delta, elapsed);
 
-
-    if (!walked && elapsed > 5) {
-        fadeAction('walk');
-        walked = true;
-    } else if (!runned && elapsed > 10) {
-        fadeAction('run');
-        runned = true;
-    }
-
-    animateCharacter(delta);
-    render(delta);
+    animateCharacter(delta, elapsed);
+    render();
     if(stats) {
         window.stats.end();
     }
     requestAnimationFrame(animate);
 }
 
-function render(delta) {
+function render() {
     renderer.render(scene, camera);
 }
 
@@ -147,22 +109,7 @@ function createScene() {
     camera.position.set(0, 1.5, 6);
     camera.lookAt(new THREE.Vector3(0, 20, 0));
 
-    // add song in bg
-    if (audio) {
-        listener = new THREE.AudioListener();
-
-        // create a global audio source
-        var sound = new THREE.Audio(listener);
-        var audioLoader = new THREE.AudioLoader(manager);
-
-        //Load a sound and set it as the Audio object's buffer
-        audioLoader.load('assets/music/song.mp3', function(buffer) {
-            sound.setBuffer(buffer);
-            sound.setLoop(true);
-            sound.play();
-        });
-        camera.add(listener);
-    }
+    configureMusic(manager, camera);
 
     controls = new OrbitControls(camera, renderer.domElement);
     //controls.target = new THREE.Vector3(0, 0.6, 0);

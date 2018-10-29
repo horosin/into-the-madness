@@ -4,9 +4,12 @@ let action = {};
 var activeActionName = 'idle';
 let mixer;
 var isLoaded = false;
+var walked = false,
+    runned = false;
 
-export function createCharacter(loader, scene) {
+export function createCharacter(manager, scene) {
     let character;
+    const loader = new THREE.JSONLoader(manager);
     loader.load('assets/models/eva-animated.json', function(geometry, materials) {
         materials.forEach(function(material) {
             material.skinning = true;
@@ -71,7 +74,16 @@ export function fadeAction(name) {
 
 }
 
-export function animateCharacter(delta) {
+export function animateCharacter(delta, elapsed) {
+
+    if (!walked && elapsed > 5) {
+        fadeAction('walk');
+        walked = true;
+    } else if (!runned && elapsed > 10) {
+        fadeAction('run');
+        runned = true;
+    }
+
     if (isLoaded) {
         mixer.update(delta);
     }

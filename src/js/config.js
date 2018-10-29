@@ -5,3 +5,7 @@ export const colors = {
     pink: 0xCC0052,
     blue: 0x006E96
 }
+
+export const debug = false;
+export const stats = true;
+export const audio = false;

@@ -1,6 +1,7 @@
-import * as THREE from "three";
+import * as THREE from 'three';
+import { debug } from '../config';
 
-export function createLights(scene, debug=false) {
+export function createLights(scene) {
 
     var light, ambientLight;
 

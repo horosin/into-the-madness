@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { colors } from './config'
+import { colors } from '../config'
 
 export function createGround(scene) {
     var geometry = new THREE.PlaneBufferGeometry(100, 100);
