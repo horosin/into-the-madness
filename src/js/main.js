@@ -17,7 +17,7 @@ import {
 import { createLights } from './scene/lights'
 import { createGround } from './scene/ground'
 import { createCharacter, animateCharacter } from './character'
-import { stats } from './config'
+import { stats, controlsOn } from './config'
 import { Manager, configureMusic } from './scene/utils'
 
 const manager = Manager(animate);
@@ -112,7 +112,7 @@ function createScene() {
     configureMusic(manager, camera);
 
     controls = new OrbitControls(camera, renderer.domElement);
-    //controls.target = new THREE.Vector3(0, 0.6, 0);
+    controls.enabled = controlsOn;
 
     return scene;
 }

@@ -8,4 +8,5 @@ export const colors = {
 
 export const debug = false;
 export const stats = true;
-export const audio = false;
+export const audio = true;
+export const controlsOn = false;

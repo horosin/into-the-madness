@@ -1,5 +1,6 @@
 import { LoadingManager } from 'three';
 import { audio } from '../config';
+import * as THREE from "three";
 
 export function Manager(animate) {
     const manager = new LoadingManager();
