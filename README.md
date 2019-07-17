@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/horosin/into-the-madness.svg?branch=master)](https://travis-ci.com/horosin/into-the-madness)
 # Into the madness
 
 Animation of a journey through magical and scary world of blocky imagination.
@@ -6,7 +7,7 @@ Animation of a journey through magical and scary world of blocky imagination.
 
 
 ## Try it out
-Coming soon.
+[Click here!](https://horosin.github.io/into-the-madness/)
 
 ## Technology
 This project utilizes: node.js, three.js, webpack, es6, electron. It was created in order for me to learn in-browser 3d game development.
